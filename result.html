@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voting Results</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #4CAF50;
+            text-align: center;
+        }
+        .result {
+            width: 450px;
+            margin: 100px auto;
+            padding: 20px;
+            background: grey;
+            box-shadow: 0 0 10px green;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            background: #9c27b0;
+            color: white;
+        }
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="result">
+    <h2>Voting Results</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Candidate</th>
+                <th>Votes</th>
+            </tr>
+        </thead>
+
+        <!-- ✅ IMPORTANT -->
+        <tbody id="resultBody"></tbody>
+    </table>
+
+    <br>
+    <button onclick="logout()">Logout</button>
+    <button onclick="goback()">Back to Dashboard</button>
+</div>
+
+<script>
+    const candidates = JSON.parse(localStorage.getItem("candidates")) || [];
+    const resultBody = document.getElementById("resultBody");
+
+    if (candidates.length === 0) {
+        resultBody.innerHTML = "<tr><td colspan='3'>No candidates found</td></tr>";
+    } else {
+        candidates.forEach((c, index) => {
+            const votes = parseInt(localStorage.getItem("vote_" + index)) || 0;
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><img src="${c.photo}"></td>
+                <td>${c.name}</td>
+                <td>${votes}</td>
+            `;
+            resultBody.appendChild(row);
+        });
+    }
+
+    function logout() {
+        window.location.href = "admin.html";
+    }
+
+    function goback() {
+        window.location.href = "dashboard.html";
+    }
+</script>
+
+</body>
+</html>
