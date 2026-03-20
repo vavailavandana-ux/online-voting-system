@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Voter Registration</title>
+    <style>
+        body {
+            font-family: Arial;
+            /* background: linear-gradient(to bottom, #4caf50, #a5d6a7); */
+            background: linear-gradient(to bottom, #ff7e5f, #feb47b, #4fc4fe, #00f2fe);
+            width:100%;
+            height:100%;
+        }
+
+        .form {
+            width: 30%;
+            margin: 100px auto;
+            background: whitesmoke;
+            padding: 20px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        input,
+        button {
+            width: 52%;
+            padding: 8px;
+            margin: 14px 0;
+            border: 2px solid #222;
+            
+
+        }
+
+        button {
+            background: #4CAF50;
+            color: blue;
+            border: none;
+            cursor: pointer;
+            border: 2px solid #3333;
+        }select {
+            appearance: none; 
+             width: 55%;
+            padding: 8px;
+            margin: 14px 0;
+            border: 2px solid #222;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form">
+        <h2>Voter Registration</h2>
+
+        <form onsubmit="registerVoter(); return false;">
+            <input type="text" placeholder="Full Name" required>
+            <input type="text" placeholder="Age" required>
+            <input type="email" placeholder="Email" id="email" required><br>
+            <!-- 👇 Updated Contact Number Field -->
+             <input type="tel" 
+               placeholder="Contact Number" 
+               id="contact" 
+               pattern="[0-9]{10}" 
+              maxlength="10"
+               title="Please enter exactly 10 digits"
+            required><br>
+            <!-- <input type="text" placeholder="Gender" required>/ -->
+             <select required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+        </form>
+        <button onclick="onsumit()" >Submit</button>
+    </div>
+
+    <script>
+        function registerVoter() {
+            alert("Registration Successful!");
+            // Redirect to Voter Page (index.html)
+            window.location.href = "index.html";
+        }
+        function goHome() {
+            window.location.href = "home.html";
+        }
+        function onsumit(){
+            window.location.href="index.html";
+        }
+
+    </script>
+
+</body>
+
+</html>
