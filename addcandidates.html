@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Candidates</title>
+    <style>
+        body {
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #4caf50, #a5d6a7);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-box {
+            width: 400px;
+            background: #2196f3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #555;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #addBtn {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        #backBtn {
+            background-color: #9c27b0;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background: #ffffff22;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li button {
+            width: auto;
+            padding: 4px 8px;
+            font-size: 14px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="form-box">
+            <h2>Add Candidates</h2>
+
+            <input type="text" id="candidateName" placeholder="Candidate Name" autofocus>
+            <input type="file" id="candidatePhoto" accept="image/*">
+            <button id="addBtn" onclick="addCandidate()">Add Candidate</button>
+            <button id="backBtn" onclick="goBack()">Back to Dashboard</button>
+
+            <ul id="candidateList"></ul>
+            <p id="msg" style="color:yellow; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <script>
+        // Load existing candidates from localStorage
+        let candidates = JSON.parse(localStorage.getItem("candidates")) || [];
+
+        // Display candidates in list
+        function displayCandidates() {
+            const list = document.getElementById("candidateList");
+            list.innerHTML = "";
+
+            if (candidates.length === 0) {
+                list.innerHTML = "<li>No candidates added yet.</li>";
+            } else {
+                candidates.forEach((c, i) => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        ${i + 1}. ${c.name} 
+                        <button onclick="deleteCandidate(${i})">Delete</button>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+        }
+
+        // Add candidate with name + photo
+        function addCandidate() {
+            const nameInput = document.getElementById("candidateName");
+            const photoInput = document.getElementById("candidatePhoto");
+            const name = nameInput.value.trim();
+            const file = photoInput.files[0];
+
+            if (name === "" || !file) {
+                document.getElementById("msg").innerText = "Please enter name and select photo!";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                candidates.push({
+                    name: name,
+                    photo: reader.result // store photo as Base64
+                });
+
+                localStorage.setItem("candidates", JSON.stringify(candidates));
+                displayCandidates();
+                document.getElementById("msg").innerText = `Candidate "${name}" added successfully!`;
+                nameInput.value = "";
+                photoInput.value = "";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Delete candidate
+        function deleteCandidate(index) {
+            if (confirm(`Are you sure you want to delete "${candidates[index].name}"?`)) {
+                candidates.splice(index, 1);
+                localStorage.setItem("candidates", JSON.stringify(candidates));
+                displayCandidates();
+                document.getElementById("msg").innerText = "Candidate deleted successfully!";
+            }
+        }
+
+        // Back to dashboard
+        function goBack() {
+            window.location.href = "dashboard.html";
+        }
+
+        // Initial display
+        displayCandidates();
+    </script>
+</body>
+</html>
