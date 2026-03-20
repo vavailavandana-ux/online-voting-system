@@ -1,0 +1,66 @@
+!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: forestgreen;
+            text-align: center;
+        }
+        .login {
+            width: 300px;
+            margin: 120px auto;
+            padding: 20px;
+            background: goldenrod;
+            box-shadow:0 0 10px blue;
+
+        }
+        input, button {
+            width: 90%;
+            padding: 8px;
+            margin: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login">
+    <h2>Admin Login</h2>
+
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+    <button 
+     style="background-color:purple; color:white; padding:10px 20px; border:none;"
+     onclick="login()">
+     login
+    </button>
+    <button 
+     style="background-color:blue; color:white; padding:10px 20px; border:none;"
+     onclick="logout()">
+     Logout
+    </button>
+    
+
+    <p id="msg" style="color:red;"></p>
+</div>
+
+<script>
+    function login() {
+        let u = document.getElementById("user").value;
+        let p = document.getElementById("pass").value;
+
+        if (u === "admin" && p === "admin123") {
+           window.location.href = "dashboard.html";
+        } else {
+            document.getElementById("msg").innerHTML = "Invalid Admin Credentials!";
+        }
+    }
+     function logout() {
+        // redirect to home page
+        window.location.href = "home.html";
+    }
+</script>
+
+</body>
+</html>
