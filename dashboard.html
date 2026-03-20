@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #009688;
+            text-align: center;
+        }
+        .dash {
+            width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #f44336;
+            box-shadow: 0 0 10px #9c27b0;
+        }
+        button {
+            width: 80%;
+            padding: 10px;
+            margin: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #viewBtn { background-color: #4caf50; }
+        #resetBtn { background-color: #ff9800; }
+        #addBtn { background-color: #2196f3; }
+        #logoutBtn { background-color: #9c27b0; }
+
+        button:hover { opacity: 0.9; }
+        #msg { margin-top: 15px; color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="dash">
+    <h2>Admin Dashboard</h2>
+
+    <button id="viewBtn"   onclick="viewResults()">View Results</button>
+    <button id="resetBtn"  onclick="resetVotes()">Reset All Votes</button>
+    <button id="addBtn"    onclick="addcandidates()">add candidates</button>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+
+    <p id="msg" style="color:green;"></p>
+</div>
+
+<script>
+    function viewResults() {
+        window.location.href = "result.html";
+    }
+
+    function resetVotes() {
+        localStorage.setItem("A", 0);
+        localStorage.setItem("B", 0);
+        localStorage.setItem("C", 0);
+        localStorage.removeItem("voted");
+
+        document.getElementById("msg").innerHTML =
+            "All votes have been reset successfully!";
+    }
+
+   function addcandidates() {
+        window.location.href = "addcandidates.html"; 
+   }
+
+    function logout() {
+        window.location.href = "admin.html";
+    }
+</script>
+
+</body>
+</html>
