@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Voting System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f44336;
+            text-align: center;
+        }
+        .box {
+            width: 450px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px gray;
+        }
+        .candidate {
+            margin-bottom: 20px;
+        }
+        img {
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        input, button {
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        button {
+            cursor: pointer;
+            background: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            border: 2px solid #222;
+        
+        }
+        #msg {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        /* Voter ID specific border */
+        #voterId {
+            border: 2px solid hsl(0, 100%, 50%); /* Orange border for voter ID */
+        }
+        #goBackbtn { background-color: #9c27b0; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Online Voting System</h2>
+
+    <!-- Voter ID input -->
+    <input type="text" id="voterId" placeholder="Enter Voter ID" maxlength="12" oninput="this.value=this.value.slice(0,12)"
+    required>
+
+
+
+    <!-- Candidates will appear here -->
+    <div id="candidateBox"></div>
+
+    <p id="msg"></p>
+
+    <button id="goBackbtn" onclick="goBack()">Back</button>
+</div>
+
+<script>
+    // Example candidates (replace with your localStorage data if exists)
+    const candidates = JSON.parse(localStorage.getItem("candidates")) || [
+        {name: "Alice", photo: "https://via.placeholder.com/120"},
+        {name: "Bob", photo: "https://via.placeholder.com/120"}
+    ];
+
+    localStorage.setItem("candidates", JSON.stringify(candidates));
+
+    const candidateBox = document.getElementById("candidateBox");
+    const msg = document.getElementById("msg");
+
+    function loadCandidates() {
+        candidateBox.innerHTML = "";
+
+        if (candidates.length === 0) {
+            candidateBox.innerHTML = "<p>No candidates available</p>";
+            return;
+        }
+
+        candidates.forEach((c, index) => {
+            const div = document.createElement("div");
+            div.className = "candidate";
+            div.innerHTML = `
+                <img src="${c.photo}" alt="${c.name}">
+                <h3>${c.name}</h3>
+                <button onclick="vote(${index})">Vote</button>
+            `;
+            candidateBox.appendChild(div);
+        });
+    }
+
+    function vote(index) {
+        const voterId = document.getElementById("voterId").value.trim();
+
+        if(voterId === "") {
+            msg.innerHTML = "Please enter your Voter ID!";
+            msg.style.color = "red";
+            return;
+        }
+
+        let votedIds = JSON.parse(localStorage.getItem("votedIds")) || [];
+
+        if(votedIds.includes(voterId)) {
+            msg.innerHTML = "This Voter ID has already voted!";
+            msg.style.color = "red";
+            return;
+        }
+
+        // Register the vote
+        let count = parseInt(localStorage.getItem("vote_" + index)) || 0;
+        localStorage.setItem("vote_" + index, count + 1);
+
+        votedIds.push(voterId);
+        localStorage.setItem("votedIds", JSON.stringify(votedIds));
+
+        // ✅ Show success message
+        msg.innerHTML = `✅ Successfully Submitted for "${candidates[index].name}"`;
+        msg.style.color = "green";
+    }
+
+    function goBack() {
+        window.location.href = "home.html";
+    }
+
+    loadCandidates();
+</script>
+
+</body>
+</html>
